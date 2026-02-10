@@ -41,6 +41,7 @@ const itemSelect_expert = document.getElementById("itemSelect_expert");
 const itemPrice_expert = document.getElementById("itemPrice_expert");
 const itemCost_expert = document.getElementById("itemCost_expert");
 const targetCoin_expert = document.getElementById("targetCoin_expert");
+const goldAcorn_expert = document.getElementById("goldAcorn_expert");
 const doublePrice_expert = document.getElementById("doublePrice_expert");
 const resultArea_expert = document.getElementById("resultArea_expert");
 const materialArea_expert = document.getElementById("materialArea_expert");
@@ -51,12 +52,40 @@ const newItemName_expert = document.getElementById("newItemName_expert");
 const newItemPrice_expert = document.getElementById("newItemPrice_expert");
 const newItemCost_expert = document.getElementById("newItemCost_expert");
 
+function updateExpertDisplayPrice(){
+  const item = items[itemSelect_expert.value];
+  if(!item) return;
+
+  let price = item.price;
+
+  if(goldAcorn_expert.checked){
+    price *= 1.1;
+  }
+  if(doublePrice_expert.checked){
+    price *= 2;
+  }
+
+  itemPrice_expert.value = price;
+}
+
+goldAcorn_expert.addEventListener("change", updateExpertDisplayPrice);
+doublePrice_expert.addEventListener("change", updateExpertDisplayPrice);
+
+itemSelect_expert.addEventListener("change", ()=>{
+  const item = items[itemSelect_expert.value];
+  if(!item) return;
+
+  itemCost_expert.value = item.cost;
+  updateExpertDisplayPrice();
+});
+
 /* ===== 保存/復元（玄人） ===== */
 function saveExpertSettings(){
   localStorage.setItem("expertSettings", JSON.stringify({
     eventName: eventName_expert.value,
     eventDays: eventDays_expert.value,
     targetCoin: targetCoin_expert.value,
+    goldAcorn: goldAcorn_expert.checked,
     doublePrice: doublePrice_expert.checked
   }));
 }
@@ -66,6 +95,7 @@ function loadExpertSettings(){
   eventName_expert.value = data.eventName || "";
   eventDays_expert.value = data.eventDays || "";
   targetCoin_expert.value = data.targetCoin || "";
+  goldAcorn_expert.checked = data.goldAcorn || false;
   doublePrice_expert.checked = data.doublePrice || false;
 }
 
@@ -158,12 +188,18 @@ function calculateExpert(){
   const days = Number(eventDays_expert.value) || 1;
   if(!item || !target) { resultArea_expert.innerHTML=""; return; }
 
+  const isGold = goldAcorn_expert ? goldAcorn_expert.checked : false;
   const isDouble = doublePrice_expert ? doublePrice_expert.checked : false;
 
   resultArea_expert.innerHTML = "";
   starRates.forEach((rate,i)=>{
     let sellPrice = item.price * rate;
-    if(isDouble) sellPrice *= 2;
+    
+    // 金のドングリ会員（1.1倍）
+    if (isGold) sellPrice *= 1.1;
+
+    // 倍額買取（2倍）
+    if (isDouble) sellPrice *= 2;
 
     const needCount = Math.ceil(target / sellPrice);
     const dailyCount = needCount / days;
@@ -215,15 +251,36 @@ const eventDays_piyo = document.getElementById("eventDays_piyo");
 const resultArea_piyo = document.getElementById("resultArea_piyo");
 const itemPrice_piyo = document.getElementById("itemPrice_piyo");
 const itemCost_piyo = document.getElementById("itemCost_piyo");
+const goldAcorn_piyo = document.getElementById("goldAcorn_piyo");
 const doublePrice_piyo = document.getElementById("doublePrice_piyo");
+
+function updatePiyoDisplayPrice(){
+  const ev = eventSelect_piyo.value;
+  const item = (piyoItemData[ev] || []).find(
+    x => x.name === itemSelect_piyo.value
+  );
+  if(!item) return;
+
+  let price = item.price;
+
+  if(goldAcorn_piyo.checked){
+    price *= 1.1;
+  }
+  if(doublePrice_piyo.checked){
+    price *= 2;
+  }
+
+  itemPrice_piyo.value = price;
+}
 
 /* ===== アイテム選択変更時 ===== */
 function updateSelectedItem_piyo(){
   const evName = eventSelect_piyo.value;
   const item = (piyoItemData[evName]||[])[itemSelect_piyo.selectedIndex];
   if(!item) return;
-  itemPrice_piyo.value = item.price;
+
   itemCost_piyo.value = item.cost;
+  updatePiyoDisplayPrice();
   calculatePiyo();
 }
 
@@ -264,12 +321,18 @@ function calculatePiyo(){
   const item = (piyoItemData[ev]||[]).find(x => x.name === itemName);
   if(!item) return;
 
+  const isGold = goldAcorn_piyo ? goldAcorn_piyo.checked : false;
   const isDouble = doublePrice_piyo ? doublePrice_piyo.checked : false;
 
   resultArea_piyo.innerHTML = "";
   starRates.forEach((rate,i) => {
     let sellPrice = item.price * rate;
-    if(isDouble) sellPrice *= 2;
+    
+    // 金のドングリ会員（1.1倍）
+    if (isGold) sellPrice *= 1.1;
+
+    // 倍額買取（2倍）
+    if (isDouble) sellPrice *= 2;
 
     const needCount = Math.ceil(target / sellPrice);
     const dailyCount = needCount / days;
@@ -296,6 +359,7 @@ function savePiyoSettings(){
     item: itemSelect_piyo.value,
     days: eventDays_piyo.value,
     target: targetCoin_piyo.value,
+    goldAcorn: goldAcorn_piyo.checked,
     double: doublePrice_piyo.checked
   }));
 }
@@ -307,6 +371,7 @@ function loadPiyoSettings(){
   itemSelect_piyo.value = data.item||"";
   eventDays_piyo.value = data.days||"";
   targetCoin_piyo.value = data.target||"";
+  if(goldAcorn_piyo) goldAcorn_piyo.checked = data.goldAcorn||false;
   if(doublePrice_piyo) doublePrice_piyo.checked = data.double||false;
   calculatePiyo();
 }
@@ -316,11 +381,21 @@ eventSelect_piyo.onchange = updateItemSelect_piyo;
 itemSelect_piyo.onchange = updateSelectedItem_piyo;
 targetCoin_expert.oninput = calculateExpert;
 eventDays_expert.oninput = calculateExpert;
+if(goldAcorn_expert) goldAcorn_expert.onchange = calculateExpert;
 if(doublePrice_expert) doublePrice_expert.onchange = calculateExpert;
 
 targetCoin_piyo.oninput = calculatePiyo;
 eventDays_piyo.oninput = calculatePiyo;
-if(doublePrice_piyo) doublePrice_piyo.onchange = calculatePiyo;
+
+if(goldAcorn_piyo) goldAcorn_piyo.onchange = () => {
+  updatePiyoDisplayPrice();
+  calculatePiyo();
+};
+
+if(doublePrice_piyo) doublePrice_piyo.onchange = () => {
+  updatePiyoDisplayPrice();
+  calculatePiyo();
+};
 
 /* ===== 初期化 ===== */
 loadExpertSettings();

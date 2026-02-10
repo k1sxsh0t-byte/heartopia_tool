@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ハートピア イベント計算ツール - V1.02a</title>
+<style>
+body { font-family: sans-serif; background: #f7f7f7; padding:16px; max-width:600px; margin:auto; }
+.card { background:#fff; border-radius:8px; padding:16px; margin-bottom:16px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+label { display:block; margin-top:8px; }
+input, select, button { width:100%; padding:6px; margin-top:4px; }
+.material-row { display:flex; gap:8px; margin-top:4px; }
+.material-row input { width:50%; }
+.result-row { margin-top:6px; }
+label.checkbox { display:flex; align-items:center; gap:8px; }
+label.checkbox input { width:auto; }
+.modal-bg { position: fixed; inset:0; background: rgba(0,0,0,0.4); display:none; align-items:center; justify-content:center; z-index:1000; }
+.modal { background:#fff; border-radius:8px; padding:16px; width:90%; max-width:420px; }
+.modal h3 { margin-top:0; }
+.modal-buttons { display:flex; gap:8px; margin-top:16px; }
+.btn-cancel { background:#ccc; }
+.btn-delete { background:#f5b5b5; }
+.btn-update { background:#9be0a3; }
+.modal small { display:block; margin-top:8px; color:#666; }
+pre { background:#f3f3f3; padding:8px; border-radius:4px; white-space:pre-wrap; }
+.top-buttons { display:flex; gap:8px; margin-bottom:16px; }
+.top-buttons button { flex:1; }
+</style>
+</head>
+<body>
+
+<h1>ハートピア イベント計算ツール - V3</h1>
+
+<!-- TOPページ / モード選択 -->
+<div id="topPage" class="card">
+  <div class="top-buttons">
+    <button id="btnExpertMode">玄人モード</button>
+    <button id="btnPiyoMode">ぴよぴよモード</button>
+  </div>
+  <h3>🆕 更新情報 26/02/10</h3>
+  <ul>
+    <li>v1.02a 両モード対応！玄人／ぴよぴよ切替可能</li>
+    <li>登録・削除・更新ボタン押下時に確認ダイアログが出るようになりました</li>
+    <li>イベント名・残り日数・目標コインを保存するようになりました</li>
+    <li>イベントアイテムの編集・削除機能を追加しました</li>
+    <li>入力情報はブラウザを閉じてもリロード・モード切替でも保持されます</li>
+  </ul>
+  <p>使い方：玄人モードは自由にアイテム登録・編集可能。ぴよぴよモードは選択式で簡単操作。</p>
+  <p>何かあれば「あいすいずでっど」まで<a href="https://x.com/Ic4isdead"> 𝕏 [旧Twitter]</a></p>
+</div>
+
+<!-- 玄人モード -->
+<div id="expertPage" class="card" style="display:none;">
+  <div class="top-buttons">
+    <button id="toTopFromExpert">TOPに戻る</button>
+    <button id="switchToPiyo">ぴよぴよモードに切替</button>
+  </div>
+  <h2>玄人モード</h2>
+
+  <label>イベント名
+    <input type="text" id="eventName_expert">
+  </label>
+  <label>残りイベント日数
+    <input type="number" id="eventDays_expert" min="1">
+  </label>
+  <label>稼ぎたいイベントコイン数
+    <input type="number" id="targetCoin_expert">
+  </label>
+  <label>売りたいイベントアイテム
+    <select id="itemSelect_expert"></select>
+  </label>
+  <label>売却価格（☆1基準）
+    <input type="number" id="itemPrice_expert" disabled>
+  </label>
+  <label>原価
+    <input type="number" id="itemCost_expert" disabled>
+  </label>
+
+  <label class="checkbox">
+    <input type="checkbox" id="doublePrice_expert"> 倍額買取
+  </label>
+
+  <div id="resultArea_expert"></div>
+
+  <h2>アイテム登録</h2>
+  <label>アイテム名<input type="text" id="newItemName_expert"></label>
+  <label>売却価格（☆1）<input type="number" id="newItemPrice_expert"></label>
+  <label>原価<input type="number" id="newItemCost_expert"></label>
+
+  <div id="materialArea_expert">
+    <label>材料</label>
+    <div class="material-row">
+      <input type="text" placeholder="材料名">
+      <input type="number" placeholder="必要数">
+    </div>
+  </div>
+  <button id="addMaterialBtn_expert">＋ 材料を追加</button><br><br>
+  <button id="addItemBtn_expert">登録</button>
+  <button id="updateItemBtn_expert">選択中アイテムを更新</button>
+  <button id="deleteItemBtn_expert">このアイテムを削除</button>
+</div>
+
+<!-- ぴよぴよモード -->
+<div id="piyoPage" class="card" style="display:none;">
+  <div class="top-buttons">
+    <button id="toTopFromPiyo">TOPに戻る</button>
+    <button id="switchToExpert">玄人モードに切替</button>
+  </div>
+  <h2>ぴよぴよモード</h2>
+  <label>イベント名
+    <select id="eventSelect_piyo"></select>
+  </label>
+  <label>残りイベント日数
+    <input type="number" id="eventDays_piyo" min="1">
+  </label>
+  <label>稼ぎたいイベントコイン数
+    <input type="number" id="targetCoin_piyo">
+  </label>
+  <label>売りたいイベントアイテム
+    <select id="itemSelect_piyo"></select>
+  </label>
+  <label>売却価格（☆1基準）
+  <input type="number" id="itemPrice_piyo" disabled>
+  </label>
+  <label>原価
+    <input type="number" id="itemCost_piyo" disabled>
+  </label>
+  
+  <label class="checkbox">
+    <input type="checkbox" id="doublePrice_piyo"> 倍額買取
+  </label>
+
+  <div id="resultArea_piyo"></div>
+</div>
+
+<!-- ===== モーダル ===== -->
+<div id="confirmModal" class="modal-bg">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <div class="modal-buttons">
+      <button id="modalOkBtn"></button>
+      <button class="btn-cancel" onclick="closeModal()">やっぱやめる</button>
+    </div>
+    <small id="modalNote"></small>
+  </div>
+</div>
+
+<script src="tool_V3.js"></script>
+</body>
+</html>

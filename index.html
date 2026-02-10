@@ -40,6 +40,7 @@ pre { background:#f3f3f3; padding:8px; border-radius:4px; white-space:pre-wrap; 
   <h3>🆕 更新情報 26/02/11 v1.02b</h3>
   <ul>
     <li>一部、料理Lv9まで対応しました <font color="red">※ネタバレ注意</font></li>
+    <li>【販売価格】☆２～☆５の表示に対応しました</li>
     <li>v1.02a 両モード対応！玄人／ぴよぴよ切替可能</li>
     <li>【販売価格】金のドングリ会員に対応しました</li>
     <li>登録・削除・更新ボタン押下時に確認ダイアログが出るようになりました</li>
@@ -74,6 +75,9 @@ pre { background:#f3f3f3; padding:8px; border-radius:4px; white-space:pre-wrap; 
   </label>
   <label>売却価格（☆1基準）
     <input type="number" id="itemPrice_expert" disabled>
+  </label>
+  <label>
+    <div id="starPrice_expert" style="display:flex; gap:16px; margin-top:6px;"></div>
   </label>
   <label>原価
     <input type="number" id="itemCost_expert" disabled>
@@ -127,7 +131,10 @@ pre { background:#f3f3f3; padding:8px; border-radius:4px; white-space:pre-wrap; 
     <select id="itemSelect_piyo"></select>
   </label>
   <label>売却価格（☆1基準）
-  <input type="number" id="itemPrice_piyo" disabled>
+    <input type="number" id="itemPrice_piyo" disabled>
+  </label>
+  <label>
+  <div id="starPrice_piyo" style="display:flex; gap:16px; margin-top:6px;"></div>
   </label>
   <label>原価
     <input type="number" id="itemCost_piyo" disabled>
@@ -160,7 +167,6 @@ pre { background:#f3f3f3; padding:8px; border-radius:4px; white-space:pre-wrap; 
 <script src="tool_v1_02b.js"></script>
 </body>
 </html>
-
 
 
 

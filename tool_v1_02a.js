@@ -219,16 +219,37 @@ function calculateExpert(){
 /* ===== ぴよぴよモード ===== */
 const piyoItemData = {
     "金策比較用": [
-    { name:"焼きキノコ系", price:180, cost:0, materials:[{name:"キノコ類",count:4}] },
-    { name:"トリュフパイ", price:830, cost:195, materials:[{name:"トリュフ",count:2},{name:"小麦",count:1},{name:"卵",count:1}] },
-    { name:"スモークサーモンベーグル", price:520, cost:195, materials:[{name:"魚",count:1},{name:"小麦",count:1},{name:"チーズ",count:1},{name:"野菜",count:1}] },
     { name:"ミックスジャム", price:160, cost:0, materials:[{name:"果実類",count:4}] },
     { name:"ブルーベリージャム", price:170, cost:0, materials:[{name:"ブルーベリー",count:4}] },
     { name:"トマトジャム", price:180, cost:0, materials:[{name:"トマト",count:4}] },
+    { name:"焼きキノコ系", price:180, cost:0, materials:[{name:"キノコ類",count:4}] },
     { name:"ラズベリージャム", price:250, cost:0, materials:[{name:"ラズベリー",count:4}] },
     { name:"リンゴジャム ", price:270, cost:0, materials:[{name:"リンゴ",count:4}] },
     { name:"オレンジジャム ", price:270, cost:0, materials:[{name:"オレンジ",count:4}] },
-    { name:"パイナップルジャム ", price:280, cost:0, materials:[{name:"パイナップル",count:4}] }
+    { name:"パイナップルジャム ", price:280, cost:0, materials:[{name:"パイナップル",count:4}] },
+    { name:"コーヒー", price:290, cost:200, materials:[{name:"コーヒー豆",count:2},{name:"コーヒー類",count:2}] },
+    { name:"カフェラテ", price:300, cost:195, materials:[{name:"コーヒー豆",count:2},{name:"牛乳",count:2}] },
+    { name:"フィッシュアンドチップス", price:310, cost:60, materials:[{name:"魚",count:2},{name:"ジャガイモ",count:1}] },
+    { name:"豪華海鮮盛り合わせ（Lv6）", price:410, cost:0, materials:[{name:"北欧アカザエビ",count:2},{name:"魚",count:2}] },
+    { name:"チーズケーキ", price:480, cost:245, materials:[{name:"チーズ",count:1},{name:"小麦",count:1},{name:"牛乳",count:1}] },
+    { name:"シーフードリゾット", price:490, cost:105, materials:[{name:"海鮮類",count:2},{name:"小麦",count:1},{name:"トマト",count:1}] },
+    { name:"キノコパイ系", price:500, cost:195, materials:[{name:"キノコ類",count:2},{name:"小麦",count:1},{name:"卵",count:1}] },
+    { name:"スモークサーモンベーグル", price:520, cost:195, materials:[{name:"魚",count:1},{name:"小麦",count:1},{name:"チーズ",count:1},{name:"野菜",count:1}] },
+    { name:"ティラミス（Lv6）", price:530, cost:300, materials:[{name:"コーヒー豆",count:1},{name:"卵",count:1},{name:"牛乳",count:1},{name:"チーズ",count:1}] },
+    { name:"カントリー風煮込み", price:640, cost:185, materials:[{name:"トマト",count:1},{name:"ジャガイモ",count:1},{name:"レタス",count:1}] },
+    { name:"ミートソースパスタ", price:670, cost:405, materials:[{name:"肉",count:1},{name:"小麦",count:1},{name:"トマト",count:1},{name:"チーズ",count:1}] },
+    { name:"英式アフタヌーンティー（Lv7）", price:710, cost:300, materials:[{name:"ティラミス",count:1},{name:"ジャム類",count:1}] },
+    { name:"アップルパイ", price:730, cost:345, materials:[{name:"リンゴ",count:1},{name:"小麦",count:1},{name:"卵",count:1},{name:"バター",count:1}] },
+    { name:"シーフードピザ", price:780, cost:235, materials:[{name:"チーズ",count:1},{name:"トマトソース",count:1},{name:"小麦",count:1},{name:"魚類",count:1}] },
+    { name:"トリュフパイ", price:830, cost:195, materials:[{name:"トリュフ",count:2},{name:"小麦",count:1},{name:"卵",count:1}] },
+    { name:"ニンジンケーキ（Lv5）", price:840, cost:345, materials:[{name:"卵",count:1},{name:"小麦",count:1},{name:"ニンジン",count:3}] },
+    { name:"トリュフのクリームパスタ", price:900, cost:240, materials:[{name:"トリュフ",count:1},{name:"小麦",count:2},{name:"牛乳",count:1}] },
+    { name:"コーンポタージュ（Lv5）", price:1340, cost:540, materials:[{name:"牛乳",count:1},{name:"バター",count:1},{name:"トウモロコシ",count:2}] },
+    { name:"ミートバーガー（Lv8）", price:1350, cost:380, materials:[{name:"小麦",count:1},{name:"レタス",count:1},{name:"肉",count:1},{name:"トマトソース",count:1}] },
+    { name:"いちごジャム（園芸Lv6）", price:1580, cost:500, materials:[{name:"いちご",count:4}] },
+    { name:"キャンドルディナー（Lv9）", price:1760, cost:620, materials:[{name:"田園サラダ",count:1},{name:"スモークサーモンベーグル",count:1},{name:"シーフードリゾット",count:1},{name:"ティラミス",count:1}] },
+    { name:"ブドウジャム（園芸Lv7）", price:2020, cost:640, materials:[{name:"ブドウ",count:4}] },
+    { name:"キャンプセット（Lv7）", price:2260, cost:840, materials:[{name:"コーヒードリンク類",count:1},{name:"シーフードピザ",count:1},{name:"アップルパイ",count:1},{name:"フィッシュアンドチップス",count:1}] },
   ],
   "スノーシーズンイベント": [
     { name:"アイスカップコーヒー", price:140, cost:200, materials:[{name:"シュガー",count:1},{name:"コーヒー豆",count:3}] },
@@ -402,3 +423,4 @@ loadExpertSettings();
 loadPiyoSettings();
 updateEventSelect_piyo();
 showTop();
+

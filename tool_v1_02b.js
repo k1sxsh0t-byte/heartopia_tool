@@ -218,7 +218,7 @@ function calculateExpert(){
 
 /* ===== ぴよぴよモード ===== */
 const piyoItemData = {
-    "金策比較用": [
+    "料理金策比較用": [
     { name:"ミックスジャム", price:160, cost:0, materials:[{name:"果実類",count:4}] },
     { name:"ブルーベリージャム", price:170, cost:0, materials:[{name:"ブルーベリー",count:4}] },
     { name:"トマトジャム", price:180, cost:0, materials:[{name:"トマト",count:4}] },
@@ -423,4 +423,5 @@ loadExpertSettings();
 loadPiyoSettings();
 updateEventSelect_piyo();
 showTop();
+
 

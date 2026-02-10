@@ -66,6 +66,7 @@ function updateExpertDisplayPrice(){
   }
 
   itemPrice_expert.value = price;
+  updateExpertStarPrices();
 }
 
 goldAcorn_expert.addEventListener("change", updateExpertDisplayPrice);
@@ -78,6 +79,27 @@ itemSelect_expert.addEventListener("change", ()=>{
   itemCost_expert.value = item.cost;
   updateExpertDisplayPrice();
 });
+
+function updateExpertStarPrices(){
+  const item = items[itemSelect_expert.value];
+  if(!item) return;
+
+  const area = document.getElementById("starPrice_expert");
+  area.innerHTML = "";
+
+  starRates.forEach((rate, i) => {
+    if(i === 0) return;
+    
+    let price = item.price * rate;
+
+    if(goldAcorn_expert.checked) price *= 1.1;
+    if(doublePrice_expert.checked) price *= 2;
+
+    const div = document.createElement("div");
+    div.innerHTML = `☆${i+1}<br>${price}`;
+    area.appendChild(div);
+  });
+}
 
 /* ===== 保存/復元（玄人） ===== */
 function saveExpertSettings(){
@@ -292,6 +314,31 @@ function updatePiyoDisplayPrice(){
   }
 
   itemPrice_piyo.value = price;
+  updatePiyoStarPrices();
+}
+
+function updatePiyoStarPrices(){
+  const ev = eventSelect_piyo.value;
+  const item = (piyoItemData[ev] || []).find(
+    x => x.name === itemSelect_piyo.value
+  );
+  if(!item) return;
+
+  const area = document.getElementById("starPrice_piyo");
+  area.innerHTML = "";
+
+  starRates.forEach((rate, i) => {
+    if(i === 0) return;
+    
+    let price = item.price * rate;
+
+    if(goldAcorn_piyo.checked) price *= 1.1;
+    if(doublePrice_piyo.checked) price *= 2;
+
+    const div = document.createElement("div");
+    div.innerHTML = `☆${i+1}<br>${price}`;
+    area.appendChild(div);
+  });
 }
 
 /* ===== アイテム選択変更時 ===== */
@@ -423,5 +470,4 @@ loadExpertSettings();
 loadPiyoSettings();
 updateEventSelect_piyo();
 showTop();
-
 
